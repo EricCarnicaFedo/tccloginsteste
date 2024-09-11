@@ -1,0 +1,39 @@
+codigo sql: 
+-- Criação do banco de dados
+CREATE DATABASE IF NOT EXISTS clinica_veterinaria;
+USE clinica_veterinaria;
+
+-- Criação da tabela de clínicas
+CREATE TABLE IF NOT EXISTS clinicas (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    endereco VARCHAR(255) NOT NULL
+);
+
+-- Criação da tabela de usuários
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    tipo ENUM('tutor', 'veterinario') NOT NULL,
+    clinica_id INT(11),
+    FOREIGN KEY (clinica_id) REFERENCES clinicas(id) ON DELETE SET NULL
+);
+
+-- Criação da tabela de pets
+CREATE TABLE IF NOT EXISTS pets (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    tutor_id INT(11),
+    FOREIGN KEY (tutor_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+-- Criação da tabela de consultas
+CREATE TABLE IF NOT EXISTS consultas (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    data DATETIME NOT NULL,
+    descricao TEXT NOT NULL,
+    pet_id INT(11),
+    FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
+);
