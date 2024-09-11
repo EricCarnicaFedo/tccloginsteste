@@ -1,0 +1,70 @@
+Modelo Conceitual do Banco de Dados
+Tabelas
+usuarios
+
+id (INT, PK, auto_increment): Identificador único do usuário.
+nome (VARCHAR(100)): Nome do usuário.
+email (VARCHAR(100), UNIQUE): E-mail do usuário.
+senha (VARCHAR(255)): Senha do usuário (armazenada de forma segura com hash).
+tipo (ENUM('tutor', 'veterinario')): Tipo de usuário (tutor ou veterinário).
+clinica_id (INT, FK): Referência ao identificador da clínica para veterinários.
+clinicas
+
+id (INT, PK, auto_increment): Identificador único da clínica.
+nome (VARCHAR(255)): Nome da clínica.
+endereco (VARCHAR(255)): Endereço da clínica.
+pets
+
+id (INT, PK, auto_increment): Identificador único do pet.
+nome (VARCHAR(100)): Nome do pet.
+tutor_id (INT, FK): Referência ao identificador do tutor (usuário).
+consultas
+
+id (INT, PK, auto_increment): Identificador único da consulta.
+data (DATETIME): Data e hora da consulta.
+descricao (TEXT): Descrição da consulta.
+pet_id (INT, FK): Referência ao identificador do pet.
+Relacionamentos
+usuarios (tutor) -> pets
+
+Um tutor pode ter vários pets.
+tutor_id em pets é uma chave estrangeira referenciando id em usuarios.
+pets -> consultas
+
+Um pet pode ter várias consultas.
+pet_id em consultas é uma chave estrangeira referenciando id em pets.
+usuarios (veterinário) -> clinicas
+
+Um veterinário está associado a uma clínica.
+clinica_id em usuarios é uma chave estrangeira referenciando id em clinicas.
+Diagrama de Entidade-Relacionamento (ERD)
+O diagrama ERD (Entidade-Relacionamento) pode ser visualizado como:
+
+usuarios
+
+id (PK)
+nome
+email
+senha
+tipo
+clinica_id (FK) -> clinicas.id (opcional, se tipo for 'veterinario')
+clinicas
+
+id (PK)
+nome
+endereco
+pets
+
+id (PK)
+nome
+tutor_id (FK) -> usuarios.id (onde tipo é 'tutor')
+consultas
+
+id (PK)
+data
+descricao
+pet_id (FK) -> pets.id
+Observações
+Chave Primária (PK): Identificador único para cada tabela.
+Chave Estrangeira (FK): Relaciona uma tabela com outra, garantindo a integridade referencial.
+Enum: Usado para definir um conjunto de valores possíveis (ex., tipo de usuário).
